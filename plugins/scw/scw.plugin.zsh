@@ -51,6 +51,20 @@ function _scw_profiles() {
 }
 compctl -K _scw_profiles ssp
 
+function scw_prompt_info() {
+  local _scw_to_show
+
+  if [[ -n "$SCW_PROFILE" ]]; then
+    _scw_to_show+="${ZSH_THEME_SCW_PROFILE_PREFIX="<scw:"}${SCW_PROFILE}${ZSH_THEME_SCW_PROFILE_SUFFIX=">"}"
+  fi
+
+  echo "$_scw_to_show"
+}
+
+if [[ "$SHOW_SCW_PROMPT" != false && "$RPROMPT" != *'$(scw_prompt_info)'* ]]; then
+  RPROMPT='$(scw_prompt_info)'"$RPROMPT"
+fi
+
 # Load scw autocompletion if autocompletion not already loaded
 if ! command -v _scw &> /dev/null; then
   eval "$(scw autocomplete script shell=zsh)"
